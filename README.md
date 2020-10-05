@@ -15,4 +15,4 @@ Options:
 
 Write one documentation file which outputs HTML files and a tex file which then gives a pdf file.
 
-See my other programs for examples of .hat files (some may be saved actually be .tex files for editing ease) 
+See my other programs for examples of .hat files in the docs folders (some may be actually saved as .tex files for editing ease) 
