@@ -173,9 +173,10 @@ void ProcessHtml::process(string & filename)
 	do{
 		if(verbose) cout << word << " ";
 		processWord(word, fileIn, fileOut);
+		
 		if(!fileIn.eof()) fileIn >> word;
-
-	}while(!fileIn.eof());
+		
+	}while(!fileIn.eof() && fileIn.good());
 
 	
 	fileIn.close();
@@ -206,7 +207,7 @@ void ProcessHat::processFile(ifstream & fileIn, ofstream & fileOut)
 		processWord(word, fileIn, fileOut);
 		if(!fileIn.eof()) fileIn >> word;
 
-	}while(!fileIn.eof());
+	}while(!fileIn.eof() && fileIn.good());
 
 	if(verbose) cout << "Adding footer\n";	
 	footer(fileIn, fileOut);
@@ -225,7 +226,7 @@ void ProcessHat::processInputFile(ifstream & fileIn, ostream & fileOut)
 		processWord(word, fileIn, fileOut);
 		fileIn >> word;
 
-	}while(!fileIn.eof());
+	}while(!fileIn.eof() && fileIn.good());
 
 	fileIn.close();
 };
@@ -418,7 +419,7 @@ void ProcessHat::addWebpageData(string & filename, ostream & fileOut)
 
 		fileWebpagesIn >> word;
 
-	}while(!fileWebpagesIn.eof());
+	}while(!fileWebpagesIn && fileWebpagesIn.good());
 
 	fileWebpagesIn.close();
 };
@@ -593,7 +594,7 @@ void changeAuthorsAndRefName(Citation * citation)
 			do{
 				getline(getNameAndInitials, aString, space);
 				someStrings.push_back(aString);				
-			}while(!getNameAndInitials.eof());
+			}while(!getNameAndInitials && getNameAndInitials.good());
 
 			lastName = *(someStrings.rbegin());
 
@@ -680,7 +681,7 @@ void ProcessHtml::addCitation(const string & citeName)
 			break;
 		};
 
-	}while(!fileBibIn.eof());
+	}while(!fileBibIn && fileBibIn.good());
 
 	if(!citeFound)
 	{
@@ -697,7 +698,7 @@ void ProcessHtml::addCitation(const string & citeName)
 		getline(fileBibIn, aLine, returnChar);
 		if(aLine.substr(0, 1) == "}") break;
 		citeLines.insert(aLine);
-	}while(!fileBibIn.eof());
+	}while(!fileBibIn && fileBibIn.good());
 
 	//add fields of the citation
 	unsigned int length;
@@ -764,7 +765,7 @@ void ProcessHtml::addReferences(string & filename, ostream & fileOut)
 		
 		};
 
-	}while(!fileCiteIn.eof());
+	}while(!fileCiteIn && fileCiteIn.good());
 
 	fileCiteIn.close();
 };
@@ -824,7 +825,7 @@ void ProcessHat::addTitleData(string & filename, ostream & fileOut)
 
 		fileTitleIn >> word;
 
-	}while(!fileTitleIn.eof());
+	}while(!fileTitleIn.eof() && fileTitleIn.good());
 
 	fileTitleIn.close();
 };
@@ -894,7 +895,7 @@ void ProcessHat::addSectionData(string & filename, ostream & fileOut, unsigned i
 
 		fileSectionsIn >> word;
 
-	}while(!fileSectionsIn.eof());
+	}while(!fileSectionsIn.eof() && fileSectionsIn.good());
 
 	fileSectionsIn.close();
 };
@@ -967,7 +968,7 @@ list<Section * > ProcessHat::getSubsections(string & sectionUpperName, string & 
 		};
 
 		fileIn >> word;
-	}while(!fileIn.eof());
+	}while(!fileIn.eof() && fileIn.good());
 
 	return subsections;
 };
@@ -1034,7 +1035,7 @@ list<Section * > ProcessHat::getSubsubsections(string & sectionUpperUpperName, s
 		};
 
 		fileIn >> word;
-	}while(!fileIn.eof());
+	}while(!fileIn.eof() && fileIn.good());
 
 	return subsubsections;
 };
@@ -1081,7 +1082,7 @@ string ProcessHat::getText(ifstream & fileIn, string endWord)
 
 		sentence += word;
 		atStart = false;
-	}while(!fileIn.eof());
+	}while(!fileIn.eof() && fileIn.good());
 
 	return sentence;
 };
@@ -1099,7 +1100,7 @@ void ProcessHat::processComment(ifstream & fileIn)
 			|| word == "*/subtitle*" || word == "*/author*" || word == "*/address*" || word == "*/date*" || word == "*/abstract*" || word == "*/stylefile*"
 			|| word == "*/logo*" || word == "*/logowidth*") return;		
 
-	}while(!fileIn.eof());
+	}while(!fileIn.eof() && fileIn.good());
 };
 
 void ProcessHat::processBoldTypeCommand(const string & starting, const string & ending, ifstream & fileIn, ostream & fileOut)
@@ -1121,7 +1122,7 @@ void ProcessHat::processBoldTypeCommand(const string & starting, const string & 
 
 		sentence += word;
 		atStart = false;
-	}while(!fileIn.eof());
+	}while(!fileIn.eof() && fileIn.good());
 
 	replaceSpecialChars(sentence);
 
@@ -1268,7 +1269,7 @@ pair<string, string> ProcessHat::getLatexFormula(string & word, ifstream & fileI
 		//	if(aString == "$") break;
 		//	formula.append(aString);
 
-		//}while(!fileIn.eof());
+		//}while(!fileIn && fileIn.good());
 	};
 
 	//get trailing bit
@@ -1280,7 +1281,7 @@ pair<string, string> ProcessHat::getLatexFormula(string & word, ifstream & fileI
 			if(aString == " " || aString == "\n") break;
 			endChars += aString;
 
-	}while(!fileIn.eof());*/
+	}while(!fileIn && fileIn.good());*/
 
 	//cout << formula << " "<<endChars<<"\n";
 	
@@ -1312,7 +1313,7 @@ pair<string, string> ProcessHat::getLatexFormula(string & word, ifstream & fileI
 				formula.append(word);
 			};
 			
-		}while(!fileIn.eof());
+		}while(!fileIn && fileIn.good());
 	};
 	
 	cout << formula <<"\n";
@@ -1363,7 +1364,7 @@ string ProcessHat::getCodeExample(ifstream & fileIn, ostream & fileOut)
 			codeExample.append(word);
 		};
 
-	}while(!fileIn.eof());
+	}while(!fileIn.eof() && fileIn.good());
 
 	//remove return from the start
 	return codeExample.substr(1);
@@ -1480,7 +1481,7 @@ void ProcessHat::processTheSection(string & sectionName, string & sectionTitle, 
 		//	mayEndPara = false;
 		//};
 		
-	}while(!fileIn.eof());
+	}while(!fileIn.eof() && fileIn.good());
 
 };
 
@@ -1580,7 +1581,7 @@ void ProcessHtml::processWebpage(ifstream & fileIn, ostream & fileOut)
 	
 		if(process) processWord(word, fileIn, fileOutNewWebpage);
 		
-	}while(!fileIn.eof());
+	}while(!fileIn && fileIn.good());
 
 	
 	fileOutNewWebpage << "</div>\n"; 
@@ -1698,7 +1699,7 @@ void ProcessTex::processHtml(ifstream & fileIn, ostream & fileOut)
 		};
 		
 		fileIn >> word;
-	}while(!fileIn.eof());
+	}while(!fileIn && fileIn.good());
 };
 
 void ProcessTex::processWebpage(ifstream & fileIn, ostream & fileOut)
@@ -1709,7 +1710,7 @@ void ProcessTex::processWebpage(ifstream & fileIn, ostream & fileOut)
 	do{
 		if(word == "*/webpage*") return; 		
 		fileIn >> word;
-	}while(!fileIn.eof());
+	}while(!fileIn && fileIn.good());
 
 };
 
@@ -1733,7 +1734,7 @@ void ProcessTex::processTex(ifstream & fileIn, ostream & fileOut)
 		if(endTrim != "") fileOut << endTrim;
 
 		fileIn >> word;
-	}while(!fileIn.eof());
+	}while(!fileIn && fileIn.good());
 
 };
 
@@ -1757,7 +1758,7 @@ void ProcessHtml::processHtml(ifstream & fileIn, ostream & fileOut)
 		if(endTrim != "") fileOut << endTrim;
 
 		fileIn >> word;
-	}while(!fileIn.eof());
+	}while(!fileIn && fileIn.good());
 };
 
 void ProcessHtml::processTex(ifstream & fileIn, ostream & fileOut)
@@ -1779,7 +1780,7 @@ void ProcessHtml::processTex(ifstream & fileIn, ostream & fileOut)
 		};
 		
 		fileIn >> word;
-	}while(!fileIn.eof());
+	}while(!fileIn && fileIn.good());
 };
 
 void ProcessTex::startSection(ostream & fileOut, Section * section, unsigned int & depth)
@@ -2046,7 +2047,7 @@ void ProcessHtml::addFooterText(ostream & fileOut)
 		if(fileFooterIn.eof()) break;
 		fileOut << " " << word;
 
-	}while(!fileFooterIn.eof());
+	}while(!fileFooterIn && fileFooterIn.good());
 
 };
 
@@ -2152,7 +2153,7 @@ void ProcessTex::processCode(ifstream & fileIn, ostream & fileOut, bool start)
 	//	if(word == "*/code*") break; 
 	//	processWord(word, fileIn, fileOut);
 	//	fileIn >> word;
-	//}while(!fileIn.eof());
+	//}while(!fileIn && fileIn.good());
 
 	//fileOut << "}";
 };
@@ -2175,7 +2176,7 @@ void ProcessHtml::processCode(ifstream & fileIn, ostream & fileOut, bool start)
 	//	if(word == "*/code*") break; 
 	//	processWord(word, fileIn, fileOut);
 	//	fileIn >> word;
-	//}while(!fileIn.eof());
+	//}while(!fileIn && fileIn.good());
 
 	//fileOut << "</tt>";
 };
@@ -2193,7 +2194,7 @@ void ProcessTex::processCodeExample(ifstream & fileIn, ostream & fileOut)
 	//	else fileOut << word << " ";
 
 	//	fileIn >> word;
-	//}while(!fileIn.eof());
+	//}while(!fileIn && fileIn.good());
 
 	//fileOut << "\\end{verbatim}\n";
 
@@ -2221,7 +2222,7 @@ void ProcessHtml::processCodeExample(ifstream & fileIn, ostream & fileOut)
 	//	else fileOut << word << " ";
 //
 	//	fileIn >> word;
-	//}while(!fileIn.eof());
+	//}while(!fileIn && fileIn.good());
 
 	//fileOut << "</pre>\n";
 };
@@ -2239,7 +2240,7 @@ void ProcessTex::processCodeExampleSmall(ifstream & fileIn, ostream & fileOut)
 	//	else fileOut << word << " ";
 
 	//	fileIn >> word;
-	//}while(!fileIn.eof());
+	//}while(!fileIn && fileIn.good());
 
 	//fileOut << "\\end{verbatim}\n";
 
@@ -2266,7 +2267,7 @@ void ProcessHtml::processCodeExampleSmall(ifstream & fileIn, ostream & fileOut)
 	//	else fileOut << word << " ";
 //
 	//	fileIn >> word;
-	//}while(!fileIn.eof());
+	//}while(!fileIn && fileIn.good());
 
 	//fileOut << "</pre>\n";
 };
@@ -2327,7 +2328,7 @@ void ProcessHtml::processTable(ifstream & fileIn, ostream & fileOut, const unsig
 
 		fileIn >> word;
 		
-	}while(!fileIn.eof());
+	}while(!fileIn && fileIn.good());
 
 	fileOut << "</table>\n";
 };
@@ -2439,7 +2440,7 @@ void ProcessTex::processTable(ifstream & fileIn, ostream & fileOut, const unsign
 
 		
 		
-	}while(!fileIn.eof());
+	}while(!fileIn && fileIn.good());
 
 	string alignStr = "{";
 	for(unsigned int i = 1; i <= noOfCols; ++i)
@@ -2552,7 +2553,7 @@ void ProcessTex::processList(ifstream & fileIn, ostream & fileOut, const bool & 
 		else if(word == "*/list*" || word == "*/numlist*") break;
 		else processWord(word, fileIn, fileOut);
 
-	}while(!fileIn.eof());
+	}while(!fileIn && fileIn.good());
 
 	if(numList) fileOut << "\\end{enumerate}\n";
 	else fileOut << "\\end{itemize}\n";
@@ -2579,7 +2580,7 @@ void ProcessHtml::processList(ifstream & fileIn, ostream & fileOut, const bool &
 		else processWord(word, fileIn, fileOut);
 
 		atStart = false;
-	}while(!fileIn.eof());
+	}while(!fileIn && fileIn.good());
 
 	
 	if(numList) fileOut << "</li>\n</ol>\n";
