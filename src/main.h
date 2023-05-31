@@ -1,6 +1,6 @@
 /*
   Richard Howey
-  Institute of Human Genetics, Newcastle University
+  Research Software Engineering, Newcastle University
   HAT-DOCS: HTML and TeX documentation from one common source
 */
 

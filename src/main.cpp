@@ -1,6 +1,6 @@
 /*
   Richard Howey
-  Institute of Human Genetics, Newcastle University
+  Research Software Engineering, Newcastle University
   HAT-DOCS: HTML and TeX documentation from one common source
 */
 
@@ -22,7 +22,7 @@ void header()
 void usage()
 {
 	header();
-	cout << "Author: Richard Howey, Institute of Human Genetics, Newcastle University\n\n"   
+	cout << "Author: Richard Howey, Research Software Engineering, Newcastle University\n\n"   
 		<< "Usage:\n\t ./hatdoc [options] file.hat [bibtexfile.bib]\n\n"		
 		<< "Options:\n"
 		<< "  -f footer.txt      - HTML footer text for the bottom of each page.\n"
